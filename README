@@ -1,0 +1,20 @@
+resolve is a simple program to resolve a given hostname to a numeric
+IP address.
+
+Rationale:
+I have more than once required DNS resolution of a domain name. Existing
+tools such as dig, host, and nslookup give more information than
+necessary. The existing tools also bypass the libc resolver and communicate
+directly with DNS servers, missing /etc/hosts.
+
+Building:
+    A C compiler with libc and the make utility are required to build.
+
+    make
+    make install
+
+Usage: resolve [-4|-6] HOSTNAME
+Resolve a hostname to numeric IP addresses
+
+  -4 Use IPv4
+  -6 Use IPv6

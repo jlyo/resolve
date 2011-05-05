@@ -1,0 +1,44 @@
+# Contributor: Jesse Young <jesse.young@gmail.com>
+pkgname=resolve-git
+pkgver=20110504
+pkgrel=1
+pkgdesc="A a simple program to resolve a given hostname to a numeric IP address"
+arch=(i686 x86_64)
+url="https://github.com/jlyo/resolve"
+license=('BSD')
+depends=('glibc')
+makedepends=('git')
+
+_gitroot="http://github.com/jlyo/resolve.git"
+_gitname="resolve"
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  if [ -d $_gitname ] ; then
+    cd $_gitname && git pull origin
+    msg "The local files are updated."
+  else
+    git clone $_gitroot $_gitname
+  fi
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting make..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname-build"
+
+  #
+  # BUILD HERE
+  #
+
+  make
+}
+
+package() {
+  cd "$srcdir/$_gitname-build"
+  make PREFIX=/usr DESTDIR="$pkgdir/" install
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+}

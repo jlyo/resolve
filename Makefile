@@ -3,4 +3,8 @@ CFLAGS=-Wall -Wextra -pedantic -std=gnu90 -g
 
 all: resolve
 
-.PHONY: all
+clean:
+	-rm -f resolve *.o
+
+.PHONY: all clean
+
